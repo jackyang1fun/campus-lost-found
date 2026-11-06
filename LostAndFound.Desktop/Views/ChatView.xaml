@@ -1,0 +1,122 @@
+<UserControl x:Class="LostAndFound.Desktop.Views.ChatView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Focusable="False">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Border Width="0" />
+        <Border Grid.Column="1"
+                Style="{DynamicResource CardStyle}"
+                Padding="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Border Padding="22,16"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="0,0,0,1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock x:Name="ChatTitle"
+                                       FontSize="20"
+                                       FontWeight="SemiBold" />
+                            <TextBlock x:Name="AliasText"
+                                       Margin="0,4,0,0"
+                                       FontSize="12"
+                                       Foreground="{DynamicResource MutedTextBrush}" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                            <Button x:Name="CompleteButton"
+                                    Content="确认交接"
+                                    Style="{DynamicResource PrimaryButtonStyle}"
+                                    Margin="0,0,8,0"
+                                    Click="CompleteButton_Click" />
+                            <Button x:Name="CancelClaimButton"
+                                    Content="取消认领"
+                                    Style="{DynamicResource DangerButtonStyle}"
+                                    Margin="0,0,8,0"
+                                    Click="CancelClaimButton_Click" />
+                            <Button Content="返回消息中心"
+                                    Style="{DynamicResource SecondaryButtonStyle}"
+                                    Click="BackButton_Click" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <ScrollViewer x:Name="MessagesScroll"
+                              Grid.Row="1"
+                              VerticalScrollBarVisibility="Auto"
+                              Padding="22,18">
+                    <ItemsControl x:Name="MessagesList">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="{Binding Margin}"
+                                        Padding="13,10"
+                                        MaxWidth="540"
+                                        HorizontalAlignment="{Binding Alignment}"
+                                        Background="{Binding Background}"
+                                        CornerRadius="11">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Sender}"
+                                                   FontSize="10"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{Binding SenderColor}" />
+                                        <TextBlock Text="{Binding Content}"
+                                                   Margin="0,4,0,0"
+                                                   FontSize="13"
+                                                   LineHeight="20"
+                                                   Foreground="{Binding TextColor}" />
+                                        <TextBlock Text="{Binding TimeText}"
+                                                   Margin="0,5,0,0"
+                                                   FontSize="9"
+                                                   HorizontalAlignment="Right"
+                                                   Foreground="{Binding TimeColor}" />
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <Border Grid.Row="2"
+                        Padding="18"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="0,1,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="MessageBox"
+                                 Height="76"
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 VerticalContentAlignment="Top"
+                                 KeyDown="MessageBox_KeyDown"
+                                 AutomationProperties.Name="聊天消息"
+                                 AutomationProperties.HelpText="输入不超过一千个字符的消息，按 Ctrl+Enter 发送" />
+                        <Button Grid.Column="1"
+                                Content="发送"
+                                Style="{DynamicResource PrimaryButtonStyle}"
+                                Width="94"
+                                Margin="12,0,0,0"
+                                VerticalAlignment="Stretch"
+                                Click="SendButton_Click" />
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

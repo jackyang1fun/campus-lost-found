@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/tools/">
+    <Project Path="tools/DemoAccountSeeder/DemoAccountSeeder.csproj" />
+  </Folder>
+  <Project Path="LostAndFound.App/LostAndFound.App.csproj" />
+  <Project Path="LostAndFound.Desktop/LostAndFound.Desktop.csproj" />
+  <Project Path="LostAndFound.Tests/LostAndFound.Tests.csproj" />
+</Solution>

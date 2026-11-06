@@ -1,0 +1,150 @@
+<UserControl x:Class="LostAndFound.Desktop.Views.ClaimsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Focusable="False">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.05*" />
+            <ColumnDefinition Width="16" />
+            <ColumnDefinition Width="0.95*" />
+        </Grid.ColumnDefinitions>
+
+        <Border Style="{DynamicResource CardStyle}" Padding="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid Margin="20,17,20,13">
+                    <StackPanel>
+                        <TextBlock Text="我的认领"
+                                   Style="{DynamicResource SectionTitleStyle}" />
+                        <TextBlock Text="聊天记录已独立到消息中心，此处只管理认领状态。"
+                                   Margin="0,4,0,0"
+                                   Style="{DynamicResource MutedTextStyle}" />
+                    </StackPanel>
+                    <Button Content="刷新"
+                            HorizontalAlignment="Right"
+                            Style="{DynamicResource SecondaryButtonStyle}"
+                            Click="RefreshButton_Click" />
+                </Grid>
+                <DataGrid x:Name="ClaimsGrid"
+                          Grid.Row="1"
+                          BorderThickness="0,1,0,0"
+                          SelectionChanged="ClaimsGrid_SelectionChanged"
+                          AutomationProperties.Name="认领记录列表">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="物品" Binding="{Binding Title}" Width="*" />
+                        <DataGridTextColumn Header="类型" Binding="{Binding TypeText}" Width="70" />
+                        <DataGridTextColumn Header="对方" Binding="{Binding Counterparty}" Width="105" />
+                        <DataGridTextColumn Header="状态" Binding="{Binding StatusText}" Width="95" />
+                        <DataGridTextColumn Header="更新" Binding="{Binding TimeText}" Width="110" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <TextBlock x:Name="EmptyText"
+                           Grid.Row="2"
+                           Margin="20,13"
+                           Text="你还没有发起或收到认领。"
+                           Style="{DynamicResource MutedTextStyle}"
+                           Visibility="Collapsed" />
+            </Grid>
+        </Border>
+
+        <Border Grid.Column="2"
+                Style="{DynamicResource CardStyle}">
+            <Grid>
+                <StackPanel x:Name="EmptyDetail"
+                            VerticalAlignment="Center"
+                            Margin="12">
+                    <TextBlock Text="选择一条认领记录"
+                               FontSize="16"
+                               FontWeight="SemiBold" />
+                    <TextBlock Text="这里显示认领进度、双方匿名编号和交接操作。"
+                               Margin="0,7,0,0"
+                               Style="{DynamicResource MutedTextStyle}" />
+                </StackPanel>
+                <StackPanel x:Name="DetailPanel"
+                            Visibility="Collapsed">
+                    <TextBlock x:Name="DetailTitle"
+                               FontSize="23"
+                               FontWeight="SemiBold" />
+                    <TextBlock x:Name="DetailMeta"
+                               Margin="0,8,0,15"
+                               Style="{DynamicResource MutedTextStyle}"
+                               LineHeight="21" />
+                    <Border Padding="13"
+                            Background="{DynamicResource SurfaceMutedBrush}"
+                            CornerRadius="10">
+                        <StackPanel>
+                            <TextBlock x:Name="AliasText" FontWeight="SemiBold" />
+                            <TextBlock Text="认领双方只能看到匿名编号，真实身份仅供管理员处理争议时审计。"
+                                       Margin="0,6,0,0"
+                                       FontSize="11"
+                                       Foreground="{DynamicResource MutedTextBrush}" />
+                        </StackPanel>
+                    </Border>
+                    <TextBlock x:Name="ClosureText"
+                               Margin="0,16,0,0"
+                               FontSize="12"
+                               Foreground="{DynamicResource MutedTextBrush}" />
+                    <WrapPanel Margin="0,22,0,0">
+                        <Button x:Name="CompleteButton"
+                                Content="确认交接完成"
+                                Style="{DynamicResource PrimaryButtonStyle}"
+                                Margin="0,0,10,8"
+                                Click="CompleteButton_Click" />
+                        <Button x:Name="CancelButton"
+                                Content="取消认领"
+                                Style="{DynamicResource DangerButtonStyle}"
+                                Margin="0,0,0,8"
+                                Click="CancelButton_Click" />
+                    </WrapPanel>
+                    <TextBlock Text="需要沟通？请前往消息中心打开对应会话。"
+                               Margin="0,16,0,0"
+                               Style="{DynamicResource MutedTextStyle}" />
+                    <Button x:Name="DisputeButton"
+                            Content="提交认领争议"
+                            Margin="0,18,0,0"
+                            Style="{DynamicResource SecondaryButtonStyle}"
+                            Click="DisputeButton_Click" />
+                    <Border x:Name="DisputePanel"
+                            Margin="0,12,0,0"
+                            Padding="15"
+                            Background="{DynamicResource SurfaceMutedBrush}"
+                            CornerRadius="11"
+                            Visibility="Collapsed">
+                        <StackPanel>
+                            <TextBlock Text="争议原因"
+                                       FontWeight="SemiBold"
+                                       FontSize="13" />
+                            <ComboBox x:Name="DisputeReasonBox"
+                                      Margin="0,7,0,10"
+                                      AutomationProperties.Name="争议原因">
+                                <ComboBoxItem Content="物品与描述不符" />
+                                <ComboBoxItem Content="交接后仍无法联系" />
+                                <ComboBoxItem Content="对完成状态有异议" />
+                                <ComboBoxItem Content="其他问题" />
+                            </ComboBox>
+                            <TextBox x:Name="DisputeDescriptionBox"
+                                     Height="72"
+                                     AcceptsReturn="True"
+                                     TextWrapping="Wrap"
+                                     VerticalContentAlignment="Top"
+                                     AutomationProperties.Name="争议说明" />
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                <Button Content="提交争议"
+                                        Style="{DynamicResource PrimaryButtonStyle}"
+                                        Margin="0,0,8,0"
+                                        Click="SubmitDisputeButton_Click" />
+                                <Button Content="收起"
+                                        Style="{DynamicResource SecondaryButtonStyle}"
+                                        Click="HideDisputeButton_Click" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

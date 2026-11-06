@@ -1,0 +1,106 @@
+<UserControl x:Class="LostAndFound.Desktop.Views.MessagesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Focusable="False">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Margin="0,0,0,18">
+            <StackPanel>
+                <TextBlock Text="匿名会话"
+                           Style="{DynamicResource SectionTitleStyle}" />
+                <TextBlock Text="认领双方在这里沟通，认领状态请在“认领管理”中操作。"
+                           Margin="0,4,0,0"
+                           Style="{DynamicResource MutedTextStyle}" />
+            </StackPanel>
+            <Button Content="刷新会话"
+                    HorizontalAlignment="Right"
+                    Style="{DynamicResource SecondaryButtonStyle}"
+                    Click="RefreshButton_Click" />
+        </Grid>
+
+        <Border Grid.Row="1"
+                Style="{DynamicResource CardStyle}"
+                Padding="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.1*" />
+                    <ColumnDefinition Width="1" />
+                    <ColumnDefinition Width="0.9*" />
+                </Grid.ColumnDefinitions>
+                <DataGrid x:Name="ConversationsGrid"
+                          BorderThickness="0"
+                          SelectionChanged="ConversationsGrid_SelectionChanged"
+                          MouseDoubleClick="ConversationsGrid_MouseDoubleClick"
+                          AutomationProperties.Name="匿名会话列表">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="物品" Binding="{Binding Title}" Width="*" />
+                        <DataGridTextColumn Header="对方" Binding="{Binding Counterparty}" Width="105" />
+                        <DataGridTextColumn Header="状态" Binding="{Binding StatusText}" Width="95" />
+                        <DataGridTextColumn Header="最后消息" Binding="{Binding LastMessage}" Width="190" />
+                        <DataGridTextColumn Header="更新" Binding="{Binding TimeText}" Width="105" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Border Grid.Column="1" Background="{DynamicResource BorderBrush}" />
+                <Grid Grid.Column="2" Margin="24">
+                    <StackPanel x:Name="EmptyDetail"
+                                VerticalAlignment="Center">
+                        <Border Width="62" Height="62"
+                                HorizontalAlignment="Center"
+                                Background="{DynamicResource AccentSoftBrush}"
+                                CornerRadius="20">
+                            <TextBlock Text="···"
+                                       FontSize="25"
+                                       Foreground="{DynamicResource AccentBrush}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center" />
+                        </Border>
+                        <TextBlock Text="选择一个会话"
+                                   Margin="0,16,0,6"
+                                   FontSize="17"
+                                   FontWeight="SemiBold"
+                                   HorizontalAlignment="Center" />
+                        <TextBlock Text="了解对方的匿名编号和最近一条消息，再进入完整聊天。"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource MutedTextBrush}"
+                                   TextAlignment="Center"
+                                   LineHeight="20" />
+                    </StackPanel>
+                    <StackPanel x:Name="DetailPanel"
+                                Visibility="Collapsed">
+                        <TextBlock x:Name="DetailTitle"
+                                   FontSize="23"
+                                   FontWeight="SemiBold" />
+                        <TextBlock x:Name="DetailMeta"
+                                   Margin="0,8,0,15"
+                                   Style="{DynamicResource MutedTextStyle}"
+                                   LineHeight="21" />
+                        <Border Padding="14"
+                                Background="{DynamicResource SurfaceMutedBrush}"
+                                CornerRadius="11">
+                            <StackPanel>
+                                <TextBlock Text="最近消息"
+                                           FontSize="11"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource MutedTextBrush}" />
+                                <TextBlock x:Name="LastMessageText"
+                                           Margin="0,6,0,0"
+                                           FontSize="13"
+                                           LineHeight="20" />
+                            </StackPanel>
+                        </Border>
+                        <Button Content="进入匿名聊天"
+                                Margin="0,20,0,0"
+                                Style="{DynamicResource PrimaryButtonStyle}"
+                                Click="OpenChatButton_Click" />
+                        <TextBlock Text="真实姓名、校园卡号和联系方式不会在普通用户的会话中显示。"
+                                   Margin="0,14,0,0"
+                                   Style="{DynamicResource MutedTextStyle}" />
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,0 +1,182 @@
+<UserControl x:Class="LostAndFound.Desktop.Views.PublishView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Focusable="False">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.3*" />
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="0.7*" />
+        </Grid.ColumnDefinitions>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <Border Style="{DynamicResource CardStyle}" Padding="26">
+                <StackPanel>
+                    <TextBlock Text="填写信息"
+                               Style="{DynamicResource SectionTitleStyle}" />
+                    <TextBlock Text="信息提交后将进入管理员审核，不会立即公开。"
+                               Margin="0,6,0,22"
+                               Style="{DynamicResource MutedTextStyle}" />
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="信息类型" FontWeight="SemiBold" FontSize="13" />
+                            <ComboBox x:Name="TypeBox"
+                                      Margin="0,7,0,15"
+                                      DisplayMemberPath="Label"
+                                      AutomationProperties.Name="信息类型" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="物品分类" FontWeight="SemiBold" FontSize="13" />
+                            <ComboBox x:Name="CategoryBox"
+                                      Margin="0,7,0,15"
+                                      DisplayMemberPath="Name"
+                                      AutomationProperties.Name="物品分类" />
+                        </StackPanel>
+                    </Grid>
+
+                    <TextBlock Text="物品名称" FontWeight="SemiBold" FontSize="13" />
+                    <TextBox x:Name="TitleBox"
+                             Margin="0,7,0,15"
+                             MaxLength="100"
+                             AutomationProperties.Name="物品名称" />
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="发生日期" FontWeight="SemiBold" FontSize="13" />
+                            <DatePicker x:Name="OccurredDate"
+                                        Margin="0,7,0,15"
+                                        AutomationProperties.Name="物品丢失或拾获日期" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="发生时间" FontWeight="SemiBold" FontSize="13" />
+                            <TextBox x:Name="OccurredTime"
+                                     Margin="0,7,0,15"
+                                     AutomationProperties.Name="物品丢失或拾获时间"
+                                     AutomationProperties.HelpText="使用二十四小时制，例如 18:30" />
+                        </StackPanel>
+                    </Grid>
+
+                    <TextBlock Text="地点" FontWeight="SemiBold" FontSize="13" />
+                    <TextBox x:Name="LocationBox"
+                             Margin="0,7,0,15"
+                             MaxLength="100"
+                             AutomationProperties.Name="物品丢失或拾获地点" />
+
+                    <TextBlock Text="物品描述" FontWeight="SemiBold" FontSize="13" />
+                    <TextBox x:Name="DescriptionBox"
+                             Height="110"
+                             Margin="0,7,0,15"
+                             MaxLength="1000"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             VerticalScrollBarVisibility="Auto"
+                             VerticalContentAlignment="Top"
+                             AutomationProperties.Name="物品描述" />
+
+                    <TextBlock Text="联系方式" FontWeight="SemiBold" FontSize="13" />
+                    <TextBox x:Name="ContactBox"
+                             Margin="0,7,0,15"
+                             MaxLength="100"
+                             AutomationProperties.Name="联系方式"
+                             AutomationProperties.HelpText="联系方式不会在公开页面直接显示" />
+
+                    <TextBlock Text="图片（可选）" FontWeight="SemiBold" FontSize="13" />
+                    <Grid Margin="0,7,0,15">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Button Content="选择图片"
+                                Style="{DynamicResource SecondaryButtonStyle}"
+                                Click="ChooseImage_Click" />
+                        <TextBlock x:Name="ImageNameText"
+                                   Grid.Column="1"
+                                   Margin="12,0"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource MutedTextBrush}"
+                                   FontSize="12"
+                                   Text="未选择图片" />
+                        <Button x:Name="ClearImageButton"
+                                Grid.Column="2"
+                                Content="清除"
+                                Style="{DynamicResource SecondaryButtonStyle}"
+                                Visibility="Collapsed"
+                                Click="ClearImage_Click" />
+                    </Grid>
+
+                    <TextBlock Text="图片替代文本" FontWeight="SemiBold" FontSize="13" />
+                    <TextBox x:Name="ImageAltBox"
+                             Margin="0,7,0,18"
+                             MaxLength="200"
+                             AutomationProperties.Name="图片替代文本"
+                             AutomationProperties.HelpText="上传图片后必须描述图片内容，供屏幕阅读器朗读" />
+
+                    <TextBlock x:Name="StatusText"
+                               MinHeight="22"
+                               Foreground="{DynamicResource DangerBrush}"
+                               AutomationProperties.LiveSetting="Assertive" />
+
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <Button Content="提交审核"
+                                Style="{DynamicResource PrimaryButtonStyle}"
+                                MinWidth="130"
+                                Margin="0,0,10,0"
+                                Click="SubmitButton_Click" />
+                        <Button Content="取消并返回"
+                                Style="{DynamicResource SecondaryButtonStyle}"
+                                Click="CancelButton_Click" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </ScrollViewer>
+
+        <Border Grid.Column="2"
+                Padding="24"
+                Background="{DynamicResource HeroBackgroundBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="16"
+                VerticalAlignment="Top">
+            <StackPanel>
+                <Border Width="46" Height="46"
+                        HorizontalAlignment="Left"
+                        Background="{DynamicResource AccentBrush}"
+                        CornerRadius="14">
+                    <TextBlock Text="i"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource AccentTextBrush}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center" />
+                </Border>
+                <TextBlock Text="怎样更容易找回？"
+                           Margin="0,15,0,10"
+                           FontSize="17"
+                           FontWeight="SemiBold" />
+                <TextBlock Text="• 名称和描述尽量具体&#x0a;&#x0a;• 地点写到楼栋或区域&#x0a;&#x0a;• 时间与实际丢失或拾获时间一致&#x0a;&#x0a;• 图片替代文本写清外观特征"
+                           FontSize="13"
+                           LineHeight="22"
+                           Foreground="{DynamicResource MutedTextBrush}" />
+                <Border Height="1"
+                        Margin="0,20"
+                        Background="{DynamicResource BorderBrush}" />
+                <TextBlock Text="提交后可在“我的发布”查看审核状态。未通过时会显示管理员填写的理由。"
+                           FontSize="12"
+                           LineHeight="20"
+                           Foreground="{DynamicResource MutedTextBrush}" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch LostAndFound (WPF)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/LostAndFound.Desktop/bin/Debug/net10.0-windows/LostAndFound.dll",
+      "cwd": "${workspaceFolder}/LostAndFound.Desktop",
+      "console": "internalConsole",
+      "stopAtEntry": false
+    },
+    {
+      "name": "Launch LostAndFound (WPF demo accounts)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/LostAndFound.Desktop/bin/Debug/net10.0-windows/LostAndFound.dll",
+      "cwd": "${workspaceFolder}/LostAndFound.Desktop",
+      "console": "internalConsole",
+      "stopAtEntry": false,
+      "environmentVariables": {
+        "LOST_FOUND_DATA_DIR": "${workspaceFolder}/demo-data"
+      }
+    }
+  ]
+}

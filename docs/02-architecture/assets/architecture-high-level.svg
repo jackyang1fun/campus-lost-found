@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1040" viewBox="0 0 1280 1040">
+  <defs>
+    <style>
+      .title { font: 700 30px "Microsoft YaHei", "Segoe UI", sans-serif; fill: #172033; }
+      .subtitle { font: 400 16px "Microsoft YaHei", "Segoe UI", sans-serif; fill: #596579; }
+      .layer-title { font: 700 18px "Microsoft YaHei", "Segoe UI", sans-serif; fill: #24324a; }
+      .box-title { font: 700 17px "Microsoft YaHei", "Segoe UI", sans-serif; fill: #172033; }
+      .box-text { font: 400 14px "Microsoft YaHei", "Segoe UI", sans-serif; fill: #49566c; }
+      .small { font: 400 12px "Microsoft YaHei", "Segoe UI", sans-serif; fill: #596579; }
+      .badge { font: 700 12px "Microsoft YaHei", "Segoe UI", sans-serif; fill: #ffffff; }
+      .arrow { stroke: #66758d; stroke-width: 2.5; fill: none; }
+      .panel { stroke-width: 1.5; rx: 18; ry: 18; }
+      .box { stroke-width: 1.2; rx: 11; ry: 11; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#66758d"/>
+    </marker>
+  </defs>
+
+  <rect width="1280" height="1040" fill="#ffffff"/>
+  <text x="640" y="42" text-anchor="middle" class="title">Lost and Found System 高层架构</text>
+  <text x="640" y="70" text-anchor="middle" class="subtitle">特性优先分层单体 + 选择性端口 + 显式事务边界</text>
+
+  <!-- UI -->
+  <rect x="40" y="98" width="1200" height="176" fill="#edf4ff" stroke="#b8cffa" class="panel"/>
+  <text x="62" y="128" class="layer-title">展示层</text>
+  <rect x="65" y="146" width="250" height="100" fill="#ffffff" stroke="#7da2e6" class="box"/>
+  <text x="190" y="179" text-anchor="middle" class="box-title">WPF AppShell</text>
+  <text x="190" y="206" text-anchor="middle" class="box-text">导航 · 会话 · 键盘命令</text>
+  <text x="190" y="227" text-anchor="middle" class="small">单进程桌面壳</text>
+
+  <rect x="345" y="146" width="520" height="100" fill="#ffffff" stroke="#7da2e6" class="box"/>
+  <text x="605" y="179" text-anchor="middle" class="box-title">Feature Pages</text>
+  <text x="605" y="206" text-anchor="middle" class="box-text">认证 · 信息 · 匹配 · 认领 · 管理/争议 · 备份</text>
+  <text x="605" y="227" text-anchor="middle" class="small">通过服务调用业务逻辑，不直接执行 SQL</text>
+
+  <rect x="895" y="146" width="310" height="100" fill="#fff9e8" stroke="#d8aa36" class="box"/>
+  <text x="1050" y="179" text-anchor="middle" class="box-title">AccessibilityHost</text>
+  <text x="1050" y="206" text-anchor="middle" class="box-text">名称/角色 · 焦点 · 播报 · 系统主题</text>
+  <rect x="1128" y="130" width="58" height="24" rx="12" fill="#d48806"/>
+  <text x="1157" y="147" text-anchor="middle" class="badge">R2</text>
+
+  <!-- Feature services -->
+  <rect x="40" y="306" width="1200" height="184" fill="#eefaf3" stroke="#a9d9bf" class="panel"/>
+  <text x="62" y="336" class="layer-title">特性服务层</text>
+  <rect x="65" y="354" width="170" height="104" fill="#ffffff" stroke="#55a77c" class="box"/>
+  <text x="150" y="386" text-anchor="middle" class="box-title">AuthService</text>
+  <text x="150" y="413" text-anchor="middle" class="box-text">注册 / 登录</text>
+  <text x="150" y="434" text-anchor="middle" class="small">本地模拟认证</text>
+
+  <rect x="255" y="354" width="170" height="104" fill="#ffffff" stroke="#55a77c" class="box"/>
+  <text x="340" y="386" text-anchor="middle" class="box-title">ListingService</text>
+  <text x="340" y="413" text-anchor="middle" class="box-text">发布 / 搜索</text>
+  <text x="340" y="434" text-anchor="middle" class="small">审核 / 状态管理</text>
+
+  <rect x="445" y="354" width="170" height="104" fill="#ffffff" stroke="#55a77c" class="box"/>
+  <text x="530" y="386" text-anchor="middle" class="box-title">MatchingService</text>
+  <text x="530" y="413" text-anchor="middle" class="box-text">候选 / 排序</text>
+  <text x="530" y="434" text-anchor="middle" class="small">可解释匹配依据</text>
+
+  <rect x="635" y="354" width="170" height="104" fill="#ffffff" stroke="#55a77c" class="box"/>
+  <text x="720" y="386" text-anchor="middle" class="box-title">ClaimService</text>
+  <text x="720" y="413" text-anchor="middle" class="box-text">匿名会话 / 交接</text>
+  <text x="720" y="434" text-anchor="middle" class="small">事务化完成认领</text>
+
+  <rect x="825" y="354" width="170" height="104" fill="#ffffff" stroke="#55a77c" class="box"/>
+  <text x="910" y="386" text-anchor="middle" class="box-title">AdminService</text>
+  <text x="910" y="413" text-anchor="middle" class="box-text">审核 / 用户 / 统计</text>
+  <text x="910" y="434" text-anchor="middle" class="small">争议调查与结论</text>
+
+  <rect x="1015" y="354" width="170" height="104" fill="#ffffff" stroke="#55a77c" class="box"/>
+  <text x="1100" y="386" text-anchor="middle" class="box-title">BackupService</text>
+  <text x="1100" y="413" text-anchor="middle" class="box-text">备份 / 校验</text>
+  <text x="1100" y="434" text-anchor="middle" class="small">恢复保护</text>
+
+  <!-- Domain and cross-cutting -->
+  <rect x="40" y="514" width="1200" height="174" fill="#f7f2ff" stroke="#cbb5ee" class="panel"/>
+  <text x="62" y="544" class="layer-title">领域与横切规则</text>
+  <rect x="65" y="562" width="280" height="100" fill="#ffffff" stroke="#8f6bc4" class="box"/>
+  <text x="205" y="594" text-anchor="middle" class="box-title">WorkflowRules</text>
+  <text x="205" y="622" text-anchor="middle" class="box-text">信息 · 认领 · 争议 · 账号状态机</text>
+  <text x="205" y="643" text-anchor="middle" class="small">纯业务规则，不依赖 UI</text>
+
+  <rect x="365" y="562" width="280" height="100" fill="#ffffff" stroke="#8f6bc4" class="box"/>
+  <text x="505" y="594" text-anchor="middle" class="box-title">AuthorizationPolicy</text>
+  <text x="505" y="622" text-anchor="middle" class="box-text">角色、所有权与敏感访问规则</text>
+  <text x="505" y="643" text-anchor="middle" class="small">统一判断，不在各页面重复</text>
+
+  <rect x="665" y="562" width="280" height="100" fill="#ffffff" stroke="#8f6bc4" class="box"/>
+  <text x="805" y="594" text-anchor="middle" class="box-title">AuditService</text>
+  <text x="805" y="622" text-anchor="middle" class="box-text">审核、封禁、删除、争议访问</text>
+  <text x="805" y="643" text-anchor="middle" class="small">与关键业务操作同事务写入</text>
+
+  <rect x="965" y="562" width="240" height="100" fill="#fff9e8" stroke="#d8aa36" class="box"/>
+  <text x="1085" y="594" text-anchor="middle" class="box-title">ApplicationSession</text>
+  <text x="1085" y="622" text-anchor="middle" class="box-text">当前用户 · 角色 · 单实例</text>
+  <text x="1085" y="643" text-anchor="middle" class="small">启动、退出与恢复门禁</text>
+
+  <!-- Ports -->
+  <rect x="40" y="722" width="1200" height="112" fill="#fff4ed" stroke="#edbb9b" class="panel"/>
+  <text x="62" y="751" class="layer-title">选择性端口</text>
+  <rect x="95" y="764" width="300" height="48" fill="#ffffff" stroke="#cc7b47" class="box"/>
+  <text x="245" y="794" text-anchor="middle" class="box-title">IMatchPolicy</text>
+  <rect x="455" y="764" width="300" height="48" fill="#ffffff" stroke="#cc7b47" class="box"/>
+  <text x="605" y="794" text-anchor="middle" class="box-title">IIdentityVerifier</text>
+  <rect x="815" y="764" width="300" height="48" fill="#ffffff" stroke="#cc7b47" class="box"/>
+  <text x="965" y="794" text-anchor="middle" class="box-title">IBackupStore</text>
+
+  <!-- Infrastructure -->
+  <rect x="40" y="868" width="1200" height="138" fill="#f3f5f8" stroke="#b6c0cf" class="panel"/>
+  <text x="62" y="898" class="layer-title">基础设施适配</text>
+  <rect x="65" y="914" width="430" height="70" fill="#ffffff" stroke="#8290a7" class="box"/>
+  <text x="280" y="944" text-anchor="middle" class="box-title">SqliteDatabase + TransactionCoordinator</text>
+  <text x="280" y="968" text-anchor="middle" class="small">WAL · 外键 · 原子事务 · 恢复后完整性校验</text>
+  <rect x="445" y="895" width="72" height="24" rx="12" fill="#d48806"/>
+  <text x="481" y="912" text-anchor="middle" class="badge">R1</text>
+
+  <rect x="520" y="914" width="210" height="70" fill="#ffffff" stroke="#8290a7" class="box"/>
+  <text x="625" y="944" text-anchor="middle" class="box-title">Local Image Store</text>
+  <text x="625" y="968" text-anchor="middle" class="small">图片与替代文本</text>
+
+  <rect x="755" y="914" width="210" height="70" fill="#ffffff" stroke="#8290a7" class="box"/>
+  <text x="860" y="944" text-anchor="middle" class="box-title">RuleBasedMatchPolicy</text>
+  <text x="860" y="968" text-anchor="middle" class="small">可解释权重与排序</text>
+
+  <rect x="990" y="914" width="215" height="70" fill="#ffffff" stroke="#8290a7" class="box"/>
+  <text x="1097" y="944" text-anchor="middle" class="box-title">Local Adapters</text>
+  <text x="1097" y="968" text-anchor="middle" class="small">模拟认证 · 自动备份 · 恢复校验</text>
+
+  <!-- Dependency arrows -->
+  <line x1="640" y1="274" x2="640" y2="314" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="640" y1="490" x2="640" y2="522" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="605" y1="688" x2="605" y2="730" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="640" y1="834" x2="640" y2="876" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <text x="735" y="1004" text-anchor="middle" class="small">依赖方向：WPF UI → Feature Services → Domain/Ports → Infrastructure；Domain 不反向依赖 UI 或 SQLite</text>
+</svg>
