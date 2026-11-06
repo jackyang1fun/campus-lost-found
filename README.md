@@ -55,8 +55,8 @@ dotnet publish .\LostAndFound.Desktop\LostAndFound.Desktop.csproj `
 
 当前已生成发布包：
 
-- `output/LostAndFound-v1.1-win-x64/`
-- `output/LostAndFound-v1.1-win-x64.zip`
+- `output/LostAndFound-v1.1.0-win-x64/`
+- `output/LostAndFound-v1.1.0-win-x64-final.zip`
 
 ## 演示账号
 
