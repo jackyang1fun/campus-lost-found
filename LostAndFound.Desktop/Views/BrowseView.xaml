@@ -175,6 +175,39 @@
                                         Click="FindMatchesButton_Click" />
                             </WrapPanel>
 
+                            <Border x:Name="ClaimPanel"
+                                    Margin="0,8,0,0"
+                                    Padding="15"
+                                    Background="{DynamicResource AccentSoftBrush}"
+                                    CornerRadius="11"
+                                    Visibility="Collapsed">
+                                <StackPanel>
+                                    <TextBlock Text="认领说明"
+                                               FontWeight="SemiBold" />
+                                    <TextBlock Text="请填写物品特征、遗失经过等能够证明归属的信息。说明仅认领双方和管理员可见。"
+                                               Margin="0,5,0,9"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource MutedTextBrush}" />
+                                    <TextBox x:Name="ClaimStatementBox"
+                                             Height="78"
+                                             MaxLength="200"
+                                             AcceptsReturn="True"
+                                             TextWrapping="Wrap"
+                                             VerticalContentAlignment="Top"
+                                             AutomationProperties.Name="认领说明"
+                                             AutomationProperties.HelpText="填写十至两百个字符的物品特征或遗失经过" />
+                                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                        <Button Content="确认发起认领"
+                                                Style="{DynamicResource PrimaryButtonStyle}"
+                                                Margin="0,0,8,0"
+                                                Click="SubmitClaimButton_Click" />
+                                        <Button Content="取消"
+                                                Style="{DynamicResource SecondaryButtonStyle}"
+                                                Click="CancelClaimButton_Click" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
                             <Border x:Name="MatchesPanel"
                                     Margin="0,18,0,0"
                                     Padding="16"
@@ -198,14 +231,27 @@
                                                         BorderBrush="{DynamicResource BorderBrush}"
                                                         BorderThickness="1"
                                                         CornerRadius="9">
-                                                    <StackPanel>
-                                                        <TextBlock Text="{Binding Title}"
-                                                                   FontWeight="SemiBold" />
-                                                        <TextBlock Text="{Binding Reasons}"
-                                                                   Margin="0,4,0,0"
-                                                                   FontSize="11"
-                                                                   Foreground="{DynamicResource MutedTextBrush}" />
-                                                    </StackPanel>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding Title}"
+                                                                       FontWeight="SemiBold" />
+                                                            <TextBlock Text="{Binding Reasons}"
+                                                                       Margin="0,4,0,0"
+                                                                       FontSize="11"
+                                                                       Foreground="{DynamicResource MutedTextBrush}" />
+                                                        </StackPanel>
+                                                        <Button Grid.Column="1"
+                                                                Content="忽略"
+                                                                Tag="{Binding}"
+                                                                IsEnabled="{Binding CanIgnore}"
+                                                                Style="{DynamicResource SecondaryButtonStyle}"
+                                                                Margin="10,0,0,0"
+                                                                Click="IgnoreMatchButton_Click" />
+                                                    </Grid>
                                                 </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>

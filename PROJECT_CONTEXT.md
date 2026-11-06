@@ -1,8 +1,8 @@
 # 校园失物招领系统 - 项目基线
 
 > 本文件是早期项目基线记录。当前有效需求与架构分别见
-> `docs/01-requirements/requirements-specification-v2.1-final.md` 和
-> `docs/02-architecture/architecture-design-v1.1-final.md`。
+> `docs/01-requirements/requirements-specification-v2.2-final.md` 和
+> `docs/02-architecture/architecture-design-v1.2-final.md`。
 
 ## 项目定位
 

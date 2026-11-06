@@ -35,6 +35,7 @@ public sealed record ClaimConversation(
     long PostingId,
     string PostingTitle,
     PostingType PostingType,
+    string ClaimStatement,
     string MyAlias,
     string CounterpartyAlias,
     ClaimStatus Status,

@@ -2,7 +2,7 @@
 
 ## 1. 输入
 
-- 已冻结需求：`../01-requirements/requirements-specification-v2.1-final.md`
+- 已冻结需求：`../01-requirements/requirements-specification-v2.2-final.md`
 - 阶段 1 项目上下文：`architecture-phase1-input.md`
 - 阶段 2 评审记录：`architecture-review-meeting-v1.md`
 - 学生裁决：合并折中，以方案 B 为基底
@@ -108,3 +108,5 @@
 - R2 无障碍职责迁移为 WPF UI Automation、动态主题资源、页面焦点管理和控件语义；
 - 架构版本更新为 V1.1-final；
 - 业务需求不变，需求基线版本更新为 V2.1-final。
+
+2026-11-06，CR-01 经项目负责人批准后，认领说明作为新的领域字段加入认领流程，架构版本更新为 V1.2-final，需求基线更新为 V2.2-final。

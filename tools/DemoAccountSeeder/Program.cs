@@ -28,7 +28,10 @@ var accounts = new[]
     new DemoAccount("STU-1001", "失主小林", "lin@demo.local", "Demo#2026", UserRole.User),
     new DemoAccount("STU-1002", "拾获人小周", "zhou@demo.local", "Demo#2026", UserRole.User),
     new DemoAccount("STU-1003", "认领人小陈", "chen@demo.local", "Demo#2026", UserRole.User),
-    new DemoAccount("STU-1004", "普通同学小吴", "wu@demo.local", "Demo#2026", UserRole.User)
+    new DemoAccount("STU-1004", "普通同学小吴", "wu@demo.local", "Demo#2026", UserRole.User),
+    new DemoAccount("STU-1005", "热心同学小许", "xu@demo.local", "Demo#2026", UserRole.User),
+    new DemoAccount("STU-1006", "失主小赵", "zhao@demo.local", "Demo#2026", UserRole.User),
+    new DemoAccount("STU-1007", "教职工小郑", "zheng@demo.local", "Demo#2026", UserRole.User)
 };
 
 var reportLines = new List<string>
@@ -104,8 +107,8 @@ reportLines.AddRange(
     "4. STU-1002 登录，发布分类、地点和时间相近的招领信息。",
     "5. 退出后使用 ADMIN-1001 审核通过。",
     "6. STU-1003 登录，在公开信息中查看关联候选并发起认领。",
-    "7. 在“我的认领”中打开匿名会话并发送消息。",
-    "8. STU-1001 登录，在“我的认领”中确认交接完成。",
+    "7. 在“消息中心”中打开匿名会话并发送消息。",
+    "8. STU-1001 登录，在“认领管理”中确认交接完成。",
     string.Empty,
     "普通用户统一密码：Demo#2026",
     "管理员密码：Admin#2026"
@@ -134,13 +137,18 @@ static void SeedSampleContent(
     var finder = auth.Login(new LoginRequest("STU-1002", "Demo#2026")).User;
     var claimant = auth.Login(new LoginRequest("STU-1003", "Demo#2026")).User;
     var idleUser = auth.Login(new LoginRequest("STU-1004", "Demo#2026")).User;
-    if (admin is null || publisher is null || finder is null || claimant is null || idleUser is null)
+    var helper = auth.Login(new LoginRequest("STU-1005", "Demo#2026")).User;
+    var secondOwner = auth.Login(new LoginRequest("STU-1006", "Demo#2026")).User;
+    var staff = auth.Login(new LoginRequest("STU-1007", "Demo#2026")).User;
+    if (admin is null || publisher is null || finder is null || claimant is null ||
+        idleUser is null || helper is null || secondOwner is null || staff is null)
     {
         reportLines.Add("演示内容未生成：示例账号登录失败。");
         return;
     }
 
-    var category = listings.GetCategories().First(item => item.Name == "电子产品");
+    var categories = listings.GetCategories().ToDictionary(item => item.Name);
+    var category = categories["电子产品"];
     var createdAny = false;
     var lost = EnsurePosting(
         listings,
@@ -177,11 +185,58 @@ static void SeedSampleContent(
         DateTimeOffset.Now.AddHours(-1),
         approve: false);
 
+    EnsurePosting(
+        listings,
+        helper,
+        admin,
+        categories["水杯"].Id,
+        PostingType.Lost,
+        "蓝色保温杯",
+        "第三教学楼 302",
+        "蓝色保温杯，杯盖有白色贴纸，杯身有轻微划痕。",
+        DateTimeOffset.Now.AddHours(-5));
+
+    EnsurePosting(
+        listings,
+        secondOwner,
+        admin,
+        categories["证件"].Id,
+        PostingType.Lost,
+        "学生证遗失",
+        "东门",
+        "姓赵，照片边缘有透明卡套，卡套内夹有一张公交卡。",
+        DateTimeOffset.Now.AddHours(-8));
+
+    EnsurePosting(
+        listings,
+        staff,
+        admin,
+        categories["钥匙"].Id,
+        PostingType.Lost,
+        "宿舍钥匙串",
+        "操场东侧",
+        "三把钥匙，带蓝色圆形挂件和一个宿舍号标签。",
+        DateTimeOffset.Now.AddDays(-1));
+
+    EnsurePosting(
+        listings,
+        finder,
+        admin,
+        categories["电子产品"].Id,
+        PostingType.Found,
+        "白色蓝牙耳机盒",
+        "西区咖啡厅",
+        "白色耳机盒，背面有一条浅灰色防丢挂绳。",
+        DateTimeOffset.Now.AddHours(-30));
+
     if (lost is not null &&
         !claims.GetClaimsForUser(idleUser.Id)
             .Any(item => item.PostingId == lost.Id))
     {
-        var claim = claims.StartClaim(idleUser, lost.Id);
+        var claim = claims.StartClaim(
+            idleUser,
+            lost.Id,
+            "这把雨伞的手柄上有一条绿色挂绳，伞套内侧写有姓名缩写。");
         if (claim.Succeeded && claim.ClaimId is not null)
         {
             claims.SendMessage(

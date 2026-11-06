@@ -7,7 +7,7 @@
 | 项目 | Lost and Found System |
 | 日期 | 2026-11-06 |
 | 学生输入 | `architecture-phase1-input.md` |
-| 需求基线 | `../01-requirements/requirements-specification-v2.1-final.md` |
+| 需求基线 | `../01-requirements/requirements-specification-v2.2-final.md` |
 | 会议角色 | 评审员 A、评审员 B、中立书记员 |
 | 当前状态 | 学生已裁决合并折中；等待阶段 3 架构精化 |
 

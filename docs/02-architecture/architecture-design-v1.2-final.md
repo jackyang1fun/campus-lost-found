@@ -4,12 +4,12 @@
 
 | 项目 | 内容 |
 |---|---|
-| 文档版本 | V1.1-final |
+| 文档版本 | V1.2-final |
 | 日期 | 2026-11-06 |
 | 状态 | 已审定通过 |
 | 架构风格 | 特性优先分层单体 + 选择性端口 + 显式事务边界 |
 | 部署形态 | Windows 10/11 x64 单机离线应用 |
-| 需求基线 | `../01-requirements/requirements-specification-v2.1-final.md` |
+| 需求基线 | `../01-requirements/requirements-specification-v2.2-final.md` |
 
 ### 修订记录
 
@@ -20,6 +20,7 @@
 | V0.3 | 2026-11-06 | 增加 R1 认领事务与恢复保护、R2 统一无障碍宿主 |
 | V1.0-final | 2026-11-06 | 学生审定通过，作为实现与需求追溯的设计基线 |
 | V1.1-final | 2026-11-06 | 经项目负责人确认，展示层由 WinForms 调整为 WPF 单窗口架构，业务服务与数据层保持不变 |
+| V1.2-final | 2026-11-06 | 采纳 CR-01，在认领流程中增加仅参与者可见的认领说明 |
 
 ## 1. 架构目标与驱动因素
 
@@ -78,7 +79,7 @@
 | `AuthService` | 注册、登录、资料、密码和账号状态 | `IIdentityVerifier`、`SqliteDatabase`、密码哈希工具 | 模拟认证规则 | FR-AUTH-001 至 008 |
 | `ListingService` | 发布、编辑、审核、查询、撤销和解决状态 | `WorkflowRules`、`AuthorizationPolicy`、`SqliteDatabase` | 信息字段和审核规则 | FR-POST-001 至 008, FR-BROWSE-001 至 005 |
 | `MatchingService` | 生成候选、解释依据、排序和忽略关联 | `IMatchPolicy`、`SqliteDatabase` | 匹配权重、维度和阈值 | FR-MATCH-001 至 005 |
-| `ClaimService` | 发起、取消、聊天和完成认领 | `ClaimCompletionCoordinator`、`WorkflowRules`、`AuditService` | 认领流程和完成规则 | FR-CLAIM-001 至 007 |
+| `ClaimService` | 发起、说明校验、取消、聊天和完成认领 | `ClaimCompletionCoordinator`、`WorkflowRules`、`AuditService` | 认领流程、认领说明和完成规则 | FR-CLAIM-001 至 008 |
 | `AdminService` | 审核、删除、用户封禁、统计和争议处理 | `AuthorizationPolicy`、`AuditService`、`SqliteDatabase` | 管理权限和争议流程 | FR-ADMIN-001 至 005, FR-DISPUTE-001 至 004 |
 | `BackupService` | 自动/手动备份、清理、校验和恢复入口 | `IBackupStore`、`BackupRestoreCoordinator` | 备份周期、数量、路径和加密 | FR-BACKUP-001 至 005 |
 
@@ -248,6 +249,7 @@ LostAndFound/
 | AD-08 | 所有页面通过 `AccessibilityHost` 统一无障碍能力 | `【AI-Adopted】` | 防止界面迭代造成无障碍回归 | 模块化、关注点分离 |
 | AD-09 | 采用 WPF 单窗口前端、独立业务核心库和测试项目 | `【Revised】` | 保持轻量交付，同时让界面视觉与业务测试独立演进 | 模块化、可交付性 |
 | AD-10 | 使用自包含 Windows x64 发布 | `【Revised】` | 满足跨电脑独立演示 | NFR-COMP-001 |
+| AD-11 | 发起认领必须填写 10 至 200 字符说明，且只对认领双方和管理员可见 | `【Revised】` | 降低冒领风险，同时保留匿名边界 | 信息隐藏、最小暴露 |
 
 ## 10. 主要架构风险与控制
 
@@ -267,7 +269,7 @@ LostAndFound/
 1. 主应用项目名使用 `LostAndFound.App`。
 2. 采用 `LostAndFound.Desktop` WPF 单窗口前端、`LostAndFound.App` 业务核心库和独立测试项目。
 3. 应用目录下使用 `data/` 的便携数据布局。
-4. 当前架构设计冻结为 V1.1-final。
+4. 当前架构设计冻结为 V1.2-final。
 
 ## 12. 审定结论
 

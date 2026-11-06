@@ -20,6 +20,8 @@
 
 ![管理员用户与日志](screenshots/admin-management.png)
 
+![认领说明与匿名聊天](screenshots/claim-statement.png)
+
 ## 2. 前端分层
 
 ```text

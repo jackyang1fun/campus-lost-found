@@ -43,13 +43,14 @@ public sealed class ClaimServiceTests : IDisposable
         var admin = RegisterAdministrator("ADMIN-5001");
         var posting = CreateAndApprove(publisher, admin, "黑色雨伞");
 
-        var started = _claims.StartClaim(claimant, posting.Id);
+        var started = _claims.StartClaim(claimant, posting.Id, ClaimStatement);
 
         Assert.True(started.Succeeded, started.Message);
         var conversation = Assert.IsType<ClaimConversation>(
             _claims.GetConversation(claimant, started.ClaimId!.Value));
         Assert.Equal("拾获人B", conversation.MyAlias);
         Assert.Equal("失主A", conversation.CounterpartyAlias);
+        Assert.Equal(ClaimStatement, conversation.ClaimStatement);
         Assert.Contains(conversation.Messages, message => message.IsSystem);
 
         var sent = _claims.SendMessage(claimant, started.ClaimId.Value, "我在图书馆等你。");
@@ -71,7 +72,7 @@ public sealed class ClaimServiceTests : IDisposable
         var outsider = LoginUser("CARD-5013");
         var admin = RegisterAdministrator("ADMIN-5011");
         var posting = CreateAndApprove(publisher, admin, "水杯");
-        var claim = _claims.StartClaim(claimant, posting.Id);
+        var claim = _claims.StartClaim(claimant, posting.Id, ClaimStatement);
 
         var result = _claims.SendMessage(outsider, claim.ClaimId!.Value, "不应发送");
 
@@ -88,12 +89,12 @@ public sealed class ClaimServiceTests : IDisposable
         var admin = RegisterAdministrator("ADMIN-5021");
         var posting = CreateAndApprove(publisher, admin, "校园卡");
 
-        var first = _claims.StartClaim(firstClaimant, posting.Id);
-        var second = _claims.StartClaim(secondClaimant, posting.Id);
+        var first = _claims.StartClaim(firstClaimant, posting.Id, ClaimStatement);
+        var second = _claims.StartClaim(secondClaimant, posting.Id, ClaimStatement);
         Assert.True(first.Succeeded, first.Message);
         Assert.True(second.Succeeded, second.Message);
 
-        var duplicate = _claims.StartClaim(firstClaimant, posting.Id);
+        var duplicate = _claims.StartClaim(firstClaimant, posting.Id, ClaimStatement);
         Assert.False(duplicate.Succeeded);
 
         var unauthorizedCompletion = _claims.CompleteClaim(firstClaimant, first.ClaimId!.Value);
@@ -124,10 +125,31 @@ public sealed class ClaimServiceTests : IDisposable
         var admin = RegisterAdministrator("ADMIN-5031");
         var posting = CreateAndApprove(publisher, admin, "钥匙");
 
-        var result = _claims.StartClaim(publisher, posting.Id);
+        var result = _claims.StartClaim(publisher, posting.Id, ClaimStatement);
 
         Assert.False(result.Succeeded);
         Assert.Contains("自己", result.Message);
+    }
+
+    [Fact]
+    public void ClaimStatementIsRequiredAndVisibleToBothParticipants()
+    {
+        var (publisher, _) = RegisterUsers("CARD-5041", "CARD-5042");
+        var claimant = LoginUser("CARD-5042");
+        var admin = RegisterAdministrator("ADMIN-5041");
+        var posting = CreateAndApprove(publisher, admin, "钥匙串");
+
+        var rejected = _claims.StartClaim(claimant, posting.Id, "太短");
+        Assert.False(rejected.Succeeded);
+        Assert.Contains("10", rejected.Message);
+
+        const string statement = "钥匙上有一个蓝色圆形挂件，并刻有宿舍号。";
+        var started = _claims.StartClaim(claimant, posting.Id, statement);
+        Assert.True(started.Succeeded, started.Message);
+
+        var publisherView = Assert.IsType<ClaimConversation>(
+            _claims.GetConversation(publisher, started.ClaimId!.Value));
+        Assert.Equal(statement, publisherView.ClaimStatement);
     }
 
     public void Dispose()
@@ -196,4 +218,6 @@ public sealed class ClaimServiceTests : IDisposable
             "test@example.edu",
             Password,
             PrivacyAccepted: true);
+
+    private const string ClaimStatement = "物品有明显磨损，并附有一张手写标签。";
 }

@@ -34,6 +34,11 @@
                                        Margin="0,4,0,0"
                                        FontSize="12"
                                        Foreground="{DynamicResource MutedTextBrush}" />
+                            <TextBlock x:Name="ClaimStatementText"
+                                       Margin="0,7,0,0"
+                                       MaxWidth="620"
+                                       FontSize="12"
+                                       Foreground="{DynamicResource TextBrush}" />
                         </StackPanel>
                         <StackPanel Grid.Column="1"
                                     Orientation="Horizontal"

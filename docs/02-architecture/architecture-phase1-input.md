@@ -34,7 +34,7 @@
 
 ## 4. 功能需求
 
-请从 `requirements-specification-v2.1-final.md` 中选择与本人切片直接相关的功能需求，并说明选择理由。引用需求 ID，但不要粘贴整份 SRS。
+请从 `requirements-specification-v2.2-final.md` 中选择与本人切片直接相关的功能需求，并说明选择理由。引用需求 ID，但不要粘贴整份 SRS。
 
 | 需求 ID | 功能摘要 | 为何属于本次切片 |
 |---|---|---|

@@ -54,6 +54,9 @@ public partial class ChatView : UserControl
             (_conversation.ClosureReason is null
                 ? string.Empty
                 : $"  ·  {_conversation.ClosureReason}");
+        ClaimStatementText.Text = string.IsNullOrWhiteSpace(_conversation.ClaimStatement)
+            ? "认领说明：历史记录未填写。"
+            : $"认领说明：{_conversation.ClaimStatement}";
 
         var surface = (Brush)FindResource("SurfaceBrush");
         var surfaceMuted = (Brush)FindResource("SurfaceMutedBrush");

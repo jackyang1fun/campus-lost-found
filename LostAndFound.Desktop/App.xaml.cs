@@ -46,7 +46,10 @@ public partial class App : Application
             var auth = new AuthService(database, new LocalCampusCardVerifier(), audit);
             var images = new LocalImageStore(paths);
             var listings = new ListingService(database, images, audit);
-            var matching = new MatchingService(listings, new RuleBasedMatchPolicy());
+            var matching = new MatchingService(
+                listings,
+                new RuleBasedMatchPolicy(),
+                database);
             var claims = new ClaimService(
                 database,
                 audit,

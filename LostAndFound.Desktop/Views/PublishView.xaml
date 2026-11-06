@@ -11,8 +11,9 @@
 
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <Border Style="{DynamicResource CardStyle}" Padding="26">
-                <StackPanel>
-                    <TextBlock Text="填写信息"
+        <StackPanel>
+                    <TextBlock x:Name="FormHeading"
+                               Text="填写信息"
                                Style="{DynamicResource SectionTitleStyle}" />
                     <TextBlock Text="信息提交后将进入管理员审核，不会立即公开。"
                                Margin="0,6,0,22"
@@ -129,7 +130,8 @@
                                AutomationProperties.LiveSetting="Assertive" />
 
                     <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                        <Button Content="提交审核"
+                        <Button x:Name="SubmitButton"
+                                Content="提交审核"
                                 Style="{DynamicResource PrimaryButtonStyle}"
                                 MinWidth="130"
                                 Margin="0,0,10,0"

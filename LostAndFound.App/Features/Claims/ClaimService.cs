@@ -22,11 +22,20 @@ public sealed class ClaimService
         _completionCoordinator = completionCoordinator;
     }
 
-    public ClaimResult StartClaim(UserAccount initiator, long postingId)
+    public ClaimResult StartClaim(
+        UserAccount initiator,
+        long postingId,
+        string claimStatement)
     {
         if (initiator.Status != UserStatus.Active)
         {
             return ClaimResult.Failure("当前账号不能发起认领。");
+        }
+
+        var normalizedStatement = claimStatement.Trim();
+        if (normalizedStatement.Length is < 10 or > 200)
+        {
+            return ClaimResult.Failure("认领说明长度必须为 10 至 200 个字符。");
         }
 
         using var connection = _database.OpenConnection();
@@ -59,6 +68,7 @@ public sealed class ClaimService
                     InitiatorUserId,
                     PublisherUserId,
                     Status,
+                    ClaimStatement,
                     CreatedAtUtc,
                     UpdatedAtUtc)
                 VALUES (
@@ -66,6 +76,7 @@ public sealed class ClaimService
                     $initiatorUserId,
                     $publisherUserId,
                     'Negotiating',
+                    $claimStatement,
                     $createdAtUtc,
                     $updatedAtUtc);
                 SELECT last_insert_rowid();
@@ -73,6 +84,7 @@ public sealed class ClaimService
             command.Parameters.AddWithValue("$postingId", postingId);
             command.Parameters.AddWithValue("$initiatorUserId", initiator.Id);
             command.Parameters.AddWithValue("$publisherUserId", posting.Value.PublisherUserId);
+            command.Parameters.AddWithValue("$claimStatement", normalizedStatement);
             command.Parameters.AddWithValue("$createdAtUtc", now.ToString("O"));
             command.Parameters.AddWithValue("$updatedAtUtc", now.ToString("O"));
             var claimId = Convert.ToInt64(command.ExecuteScalar());
@@ -179,7 +191,8 @@ public sealed class ClaimService
                 c.InitiatorUserId,
                 c.PublisherUserId,
                 c.Status,
-                c.ClosureReason
+                c.ClosureReason,
+                c.ClaimStatement
             FROM Claims c
             JOIN Postings p ON p.Id = c.PostingId
             WHERE c.Id = $claimId
@@ -196,6 +209,7 @@ public sealed class ClaimService
         PostingType postingType;
         string posterTitle;
         string? closureReason;
+        string claimStatement;
 
         using (var reader = command.ExecuteReader())
         {
@@ -214,6 +228,9 @@ public sealed class ClaimService
             closureReason = reader.IsDBNull(reader.GetOrdinal("ClosureReason"))
                 ? null
                 : reader.GetString(reader.GetOrdinal("ClosureReason"));
+            claimStatement = reader.IsDBNull(reader.GetOrdinal("ClaimStatement"))
+                ? string.Empty
+                : reader.GetString(reader.GetOrdinal("ClaimStatement"));
         }
 
         var isPublisher = user.Id == publisherUserId;
@@ -229,6 +246,7 @@ public sealed class ClaimService
             postingId,
             posterTitle,
             postingType,
+            claimStatement,
             AliasFor(postingType, isPublisher),
             AliasFor(postingType, !isPublisher),
             status,

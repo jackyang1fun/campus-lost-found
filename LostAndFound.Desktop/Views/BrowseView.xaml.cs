@@ -77,6 +77,7 @@ public partial class BrowseView : UserControl
             $"{posting.CategoryName}  ·  {posting.Location}\n" +
             $"发生时间：{posting.OccurredAt.ToLocalTime():yyyy-MM-dd HH:mm}  ·  发布者：{posting.PublisherName}";
         DetailDescription.Text = posting.Description;
+        ClaimPanel.Visibility = Visibility.Collapsed;
         MatchesPanel.Visibility = Visibility.Collapsed;
 
         var imagePath = _services.Images.Resolve(posting.ImageRelativePath);
@@ -122,6 +123,7 @@ public partial class BrowseView : UserControl
         _selectedPosting = null;
         EmptyDetailPanel.Visibility = Visibility.Visible;
         DetailScroll.Visibility = Visibility.Collapsed;
+        ClaimPanel.Visibility = Visibility.Collapsed;
         MatchesPanel.Visibility = Visibility.Collapsed;
     }
 
@@ -184,7 +186,22 @@ public partial class BrowseView : UserControl
             return;
         }
 
-        var result = _services.Claims.StartClaim(_currentUser, _selectedPosting.Id);
+        ClaimPanel.Visibility = Visibility.Visible;
+        ClaimStatementBox.Clear();
+        ClaimStatementBox.Focus();
+    }
+
+    private void SubmitClaimButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (_selectedPosting is null || _currentUser is null)
+        {
+            return;
+        }
+
+        var result = _services.Claims.StartClaim(
+            _currentUser,
+            _selectedPosting.Id,
+            ClaimStatementBox.Text);
         if (!result.Succeeded || result.ClaimId is null)
         {
             _notify(result.Message, true);
@@ -192,7 +209,15 @@ public partial class BrowseView : UserControl
         }
 
         _notify("认领会话已创建。", false);
+        ClaimPanel.Visibility = Visibility.Collapsed;
         _openChat(result.ClaimId.Value);
+    }
+
+    private void CancelClaimButton_Click(object sender, RoutedEventArgs e)
+    {
+        ClaimStatementBox.Clear();
+        ClaimPanel.Visibility = Visibility.Collapsed;
+        ClaimButton.Focus();
     }
 
     private void FindMatchesButton_Click(object sender, RoutedEventArgs e)
@@ -202,15 +227,42 @@ public partial class BrowseView : UserControl
             return;
         }
 
-        var suggestions = _services.Matching.GetSuggestions(_selectedPosting);
+        var suggestions = _services.Matching.GetSuggestions(
+            _selectedPosting,
+            _currentUser?.Id);
         MatchesList.ItemsSource = suggestions.Select(suggestion => new MatchRow(
+            _selectedPosting.Id,
+            suggestion.Candidate.Id,
             suggestion.Candidate.Title,
             $"{UiFormat.PostingTypeLabel(suggestion.Candidate.Type)} · {suggestion.Candidate.Location} · " +
-            $"{string.Join("、", suggestion.Reasons)}")).ToArray();
+            $"{string.Join("、", suggestion.Reasons)}",
+            _currentUser is not null)).ToArray();
         NoMatchesText.Visibility = suggestions.Count == 0
             ? Visibility.Visible
             : Visibility.Collapsed;
         MatchesPanel.Visibility = Visibility.Visible;
+    }
+
+    private void IgnoreMatchButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (_currentUser is null ||
+            sender is not Button { Tag: MatchRow row } ||
+            MatchesList.ItemsSource is not MatchRow[] matches)
+        {
+            return;
+        }
+
+        _services.Matching.IgnoreSuggestion(
+            _currentUser.Id,
+            row.TargetPostingId,
+            row.CandidatePostingId);
+        var remaining = matches
+            .Where(match => match.CandidatePostingId != row.CandidatePostingId)
+            .ToArray();
+        MatchesList.ItemsSource = remaining;
+        NoMatchesText.Visibility = remaining.Length == 0
+            ? Visibility.Visible
+            : Visibility.Collapsed;
     }
 
     private sealed record PostingRow(
@@ -221,7 +273,12 @@ public partial class BrowseView : UserControl
         string Location,
         string TimeText);
 
-    private sealed record MatchRow(string Title, string Reasons);
+    private sealed record MatchRow(
+        long TargetPostingId,
+        long CandidatePostingId,
+        string Title,
+        string Reasons,
+        bool CanIgnore);
 
     private sealed record CategoryFilter(int? Id, string Name);
 }

@@ -69,6 +69,9 @@ public partial class ClaimsView : UserControl
             $"{UiFormat.ClaimStatusLabel(conversation.Status)}";
         AliasText.Text =
             $"你的匿名编号：{conversation.MyAlias}    对方：{conversation.CounterpartyAlias}";
+        ClaimStatementText.Text = string.IsNullOrWhiteSpace(conversation.ClaimStatement)
+            ? "历史认领未填写说明。"
+            : conversation.ClaimStatement;
         ClosureText.Text = conversation.ClosureReason is null
             ? string.Empty
             : $"结束原因：{conversation.ClosureReason}";

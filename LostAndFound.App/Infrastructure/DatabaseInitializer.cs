@@ -4,7 +4,7 @@ namespace LostAndFound.App.Infrastructure;
 
 public sealed class DatabaseInitializer
 {
-    private const int CurrentSchemaVersion = 4;
+    private const int CurrentSchemaVersion = 6;
     private readonly SqliteDatabase _database;
 
     public DatabaseInitializer(SqliteDatabase database)
@@ -48,6 +48,18 @@ public sealed class DatabaseInitializer
         {
             CreateVersionFourSchema(connection, transaction);
             version = 4;
+        }
+
+        if (version == 4)
+        {
+            CreateVersionFiveSchema(connection, transaction);
+            version = 5;
+        }
+
+        if (version == 5)
+        {
+            CreateVersionSixSchema(connection, transaction);
+            version = 6;
         }
 
         if (version != CurrentSchemaVersion)
@@ -287,6 +299,40 @@ public sealed class DatabaseInitializer
 
             CREATE INDEX IX_Disputes_Status
                 ON Disputes (Status, UpdatedAtUtc);
+            """;
+        command.ExecuteNonQuery();
+    }
+
+    private static void CreateVersionFiveSchema(
+        SqliteConnection connection,
+        SqliteTransaction transaction)
+    {
+        using var command = connection.CreateCommand();
+        command.Transaction = transaction;
+        command.CommandText = """
+            CREATE TABLE IgnoredMatches (
+                UserId INTEGER NOT NULL,
+                TargetPostingId INTEGER NOT NULL,
+                CandidatePostingId INTEGER NOT NULL,
+                CreatedAtUtc TEXT NOT NULL,
+                PRIMARY KEY (UserId, TargetPostingId, CandidatePostingId),
+                FOREIGN KEY (UserId) REFERENCES Users (Id),
+                FOREIGN KEY (TargetPostingId) REFERENCES Postings (Id),
+                FOREIGN KEY (CandidatePostingId) REFERENCES Postings (Id)
+            );
+            """;
+        command.ExecuteNonQuery();
+    }
+
+    private static void CreateVersionSixSchema(
+        SqliteConnection connection,
+        SqliteTransaction transaction)
+    {
+        using var command = connection.CreateCommand();
+        command.Transaction = transaction;
+        command.CommandText = """
+            ALTER TABLE Claims
+            ADD COLUMN ClaimStatement TEXT NULL;
             """;
         command.ExecuteNonQuery();
     }

@@ -53,6 +53,8 @@ public partial class PublishView : UserControl
 
         if (existingPosting is not null)
         {
+            FormHeading.Text = "编辑信息";
+            SubmitButton.Content = "保存并重新审核";
             TypeBox.SelectedItem = TypeBox.Items
                 .Cast<TypeOption>()
                 .First(option => option.Value == existingPosting.Type);

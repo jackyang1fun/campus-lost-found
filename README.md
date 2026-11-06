@@ -4,11 +4,11 @@ Windows 10/11 x64 单机离线失物招领桌面应用，使用 WPF、.NET 10 �
 
 ## 当前状态
 
-- 需求规格：V2.1-final，已审定
-- 软件架构：V1.1-final，已审定
+- 需求规格：V2.2-final，已审定
+- 软件架构：V1.2-final，已审定
 - 实现阶段：可运行 MVP
 - 数据库：SQLite，无需额外安装数据库服务器
-- 自动化测试：33 项通过
+- 自动化测试：34 项通过
 - 发布形式：Windows x64 自包含单文件程序
 
 ## 目录
@@ -27,7 +27,7 @@ Windows 10/11 x64 单机离线失物招领桌面应用，使用 WPF、.NET 10 �
 - 失物/招领发布、图片与替代文本、编辑、撤销和标记解决
 - 游客和登录用户的信息浏览、关键词搜索及分类筛选
 - 基于分类、地点、描述和时间的基础关联匹配
-- 认领发起、匿名聊天、取消认领和交接完成
+- 认领发起、10 至 200 字认领说明、匿名聊天、取消认领和交接完成
 - 管理员审核、内容删除、用户封禁和操作日志
 - 争议提交、管理员敏感访问审计及争议结论
 - 每日自动备份、手动备份、完整性检查和恢复保护
@@ -55,8 +55,8 @@ dotnet publish .\LostAndFound.Desktop\LostAndFound.Desktop.csproj `
 
 当前已生成发布包：
 
-- `output/LostAndFound-v1.1.0-win-x64/`
-- `output/LostAndFound-v1.1.0-win-x64-final.zip`
+- `output/LostAndFound-v1.2.0-win-x64/`
+- `output/LostAndFound-v1.2.0-win-x64.zip`
 
 ## 演示账号
 

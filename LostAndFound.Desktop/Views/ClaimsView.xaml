@@ -88,6 +88,19 @@
                                Margin="0,16,0,0"
                                FontSize="12"
                                Foreground="{DynamicResource MutedTextBrush}" />
+                    <Border Margin="0,16,0,0"
+                            Padding="13"
+                            Background="{DynamicResource AccentSoftBrush}"
+                            CornerRadius="10">
+                        <StackPanel>
+                            <TextBlock Text="认领说明"
+                                       FontWeight="SemiBold" />
+                            <TextBlock x:Name="ClaimStatementText"
+                                       Margin="0,6,0,0"
+                                       FontSize="13"
+                                       LineHeight="21" />
+                        </StackPanel>
+                    </Border>
                     <WrapPanel Margin="0,22,0,0">
                         <Button x:Name="CompleteButton"
                                 Content="确认交接完成"

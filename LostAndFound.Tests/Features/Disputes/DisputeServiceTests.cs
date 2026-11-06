@@ -44,7 +44,10 @@ public sealed class DisputeServiceTests : IDisposable
         var claimant = RegisterUser("CARD-7002");
         var admin = RegisterAdministrator("ADMIN-7001");
         var posting = CreateAndApprove(publisher, admin, "雨伞");
-        var claim = _claims.StartClaim(claimant, posting.Id);
+        var claim = _claims.StartClaim(
+            claimant,
+            posting.Id,
+            "物品有明确刻字，并附有购买凭证。");
         Assert.True(claim.Succeeded, claim.Message);
 
         var opened = _disputes.OpenDispute(
@@ -82,7 +85,10 @@ public sealed class DisputeServiceTests : IDisposable
         var outsider = RegisterUser("CARD-7013");
         var admin = RegisterAdministrator("ADMIN-7011");
         var posting = CreateAndApprove(publisher, admin, "水杯");
-        var claim = _claims.StartClaim(claimant, posting.Id);
+        var claim = _claims.StartClaim(
+            claimant,
+            posting.Id,
+            "物品有明确刻字，并附有购买凭证。");
 
         var result = _disputes.OpenDispute(
             outsider,

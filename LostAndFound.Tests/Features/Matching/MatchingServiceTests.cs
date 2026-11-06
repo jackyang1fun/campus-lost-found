@@ -29,7 +29,10 @@ public sealed class MatchingServiceTests : IDisposable
         var audit = new AuditService();
         _auth = new AuthService(database, new LocalCampusCardVerifier(), audit);
         _listings = new ListingService(database, new LocalImageStore(_paths), audit);
-        _matching = new MatchingService(_listings, new RuleBasedMatchPolicy());
+        _matching = new MatchingService(
+            _listings,
+            new RuleBasedMatchPolicy(),
+            database);
     }
 
     [Fact]
@@ -75,6 +78,10 @@ public sealed class MatchingServiceTests : IDisposable
         Assert.Contains(candidate.Reasons, reason => reason.Contains("分类"));
         Assert.Contains(candidate.Reasons, reason => reason.Contains("地点"));
         Assert.True(candidate.Reasons.Count >= 2);
+
+        _matching.IgnoreSuggestion(user.Id, lost.Id, candidate.Candidate.Id);
+        Assert.Empty(_matching.GetSuggestions(lost, user.Id));
+        Assert.Single(_matching.GetSuggestions(lost));
     }
 
     public void Dispose()
