@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Focusable="False">
     <ScrollViewer VerticalScrollBarVisibility="Auto"
-                  HorizontalScrollBarVisibility="Disabled">
+                  HorizontalScrollBarVisibility="Disabled"
+                  AutomationProperties.Name="工作台内容">
         <StackPanel>
             <Border MinHeight="184"
                     Margin="0,0,0,20"
@@ -52,7 +53,8 @@
                 </Grid>
             </Border>
 
-            <ItemsControl x:Name="MetricsList">
+            <ItemsControl x:Name="MetricsList"
+                          AutomationProperties.Name="工作台统计指标">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <UniformGrid Columns="4" />
@@ -113,7 +115,8 @@
                                     Cursor="Hand"
                                     Click="BrowseAction_Click" />
                         </Grid>
-                        <ItemsControl x:Name="RecentPostingsList">
+                        <ItemsControl x:Name="RecentPostingsList"
+                                      AutomationProperties.Name="最新公开信息">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Border Padding="0,10"
@@ -165,7 +168,8 @@
                         <TextBlock Text="进行中的认领"
                                    Style="{DynamicResource SectionTitleStyle}"
                                    Margin="0,0,0,14" />
-                        <ItemsControl x:Name="ActiveClaimsList">
+                        <ItemsControl x:Name="ActiveClaimsList"
+                                      AutomationProperties.Name="进行中的认领">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Border Margin="0,0,0,10"

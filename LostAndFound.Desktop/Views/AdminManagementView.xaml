@@ -36,7 +36,10 @@
             </Border>
         </UniformGrid>
 
-        <TabControl Grid.Row="2" Background="Transparent" BorderThickness="0">
+        <TabControl Grid.Row="2"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    AutomationProperties.Name="用户与日志选项卡">
             <TabItem Header="用户管理">
                 <Grid Margin="0,14,0,0">
                     <Grid.RowDefinitions>
