@@ -148,11 +148,39 @@
                                        FontSize="12"
                                        Foreground="{DynamicResource MutedTextBrush}"
                                        LineHeight="20" />
-                            <Image x:Name="DetailImage"
-                                   Height="160"
-                                   Margin="0,16,0,0"
-                                   Stretch="UniformToFill"
-                                   Visibility="Collapsed" />
+                            <Border Height="164"
+                                    Margin="0,16,0,0"
+                                    Background="{DynamicResource SurfaceMutedBrush}"
+                                    CornerRadius="14"
+                                    ClipToBounds="True">
+                                <Grid>
+                                    <Image x:Name="DetailImage"
+                                           Stretch="UniformToFill"
+                                           Visibility="Collapsed" />
+                                    <StackPanel x:Name="FallbackArtwork"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center">
+                                        <Border Width="56"
+                                                Height="56"
+                                                HorizontalAlignment="Center"
+                                                Background="{DynamicResource AccentSoftBrush}"
+                                                BorderBrush="{DynamicResource AccentBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="28">
+                                            <TextBlock x:Name="CategoryGlyph"
+                                                       FontFamily="Segoe UI Emoji"
+                                                       FontSize="30"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center" />
+                                        </Border>
+                                        <TextBlock x:Name="CategoryArtworkLabel"
+                                                   Margin="0,8,0,0"
+                                                   FontSize="12"
+                                                   Foreground="{DynamicResource MutedTextBrush}"
+                                                   HorizontalAlignment="Center" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
                             <TextBlock x:Name="DetailDescription"
                                        Margin="0,16,0,0"
                                        FontSize="14"

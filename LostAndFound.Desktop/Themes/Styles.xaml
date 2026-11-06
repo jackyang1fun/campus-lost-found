@@ -22,6 +22,18 @@
     <SolidColorBrush x:Key="HeroEndBrush" Color="#F5FBF7" />
     <SolidColorBrush x:Key="FocusBrush" Color="#2E8C73" />
 
+    <Style x:Key="ButtonFocusVisualStyle" TargetType="Control">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Margin="8,2"
+                            BorderBrush="{DynamicResource FocusBrush}"
+                            BorderThickness="0,0,0,2" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="Window">
         <Setter Property="FontFamily" Value="{DynamicResource AppFont}" />
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
@@ -71,6 +83,7 @@
         <Setter Property="Padding" Value="18,9" />
         <Setter Property="MinHeight" Value="40" />
         <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisualStyle}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -85,12 +98,6 @@
                                               VerticalAlignment="Center"
                                               TextElement.Foreground="{TemplateBinding Foreground}"
                                               RecognizesAccessKey="True" />
-                            <Border x:Name="FocusRing"
-                                    Margin="-4"
-                                    BorderBrush="{DynamicResource FocusBrush}"
-                                    BorderThickness="2"
-                                    CornerRadius="12"
-                                    Visibility="Collapsed" />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -101,9 +108,6 @@
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.82" />
-                        </Trigger>
-                        <Trigger Property="IsKeyboardFocused" Value="True">
-                            <Setter TargetName="FocusRing" Property="Visibility" Value="Visible" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.45" />
@@ -121,6 +125,7 @@
         <Setter Property="Background" Value="{DynamicResource SurfaceBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
         <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisualStyle}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -135,12 +140,6 @@
                                               VerticalAlignment="Center"
                                               TextElement.Foreground="{TemplateBinding Foreground}"
                                               RecognizesAccessKey="True" />
-                            <Border x:Name="FocusRing"
-                                    Margin="-4"
-                                    BorderBrush="{DynamicResource FocusBrush}"
-                                    BorderThickness="2"
-                                    CornerRadius="12"
-                                    Visibility="Collapsed" />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -154,9 +153,6 @@
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.82" />
-                        </Trigger>
-                        <Trigger Property="IsKeyboardFocused" Value="True">
-                            <Setter TargetName="FocusRing" Property="Visibility" Value="Visible" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.42" />
@@ -185,6 +181,7 @@
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource SidebarTextBrush}" />
         <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisualStyle}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -199,12 +196,6 @@
                                               VerticalAlignment="Center"
                                               TextElement.Foreground="{TemplateBinding Foreground}"
                                               RecognizesAccessKey="True" />
-                            <Border x:Name="FocusRing"
-                                    Margin="-3"
-                                    BorderBrush="{DynamicResource SidebarTextBrush}"
-                                    BorderThickness="2"
-                                    CornerRadius="11"
-                                    Visibility="Collapsed" />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -212,9 +203,6 @@
                             <Setter TargetName="ButtonBorder"
                                     Property="Background"
                                     Value="{DynamicResource SidebarSelectedBrush}" />
-                        </Trigger>
-                        <Trigger Property="IsKeyboardFocused" Value="True">
-                            <Setter TargetName="FocusRing" Property="Visibility" Value="Visible" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

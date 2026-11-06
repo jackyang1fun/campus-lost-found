@@ -91,6 +91,7 @@ public partial class BrowseView : UserControl
             bitmap.Freeze();
             DetailImage.Source = bitmap;
             DetailImage.Visibility = Visibility.Visible;
+            FallbackArtwork.Visibility = Visibility.Collapsed;
             System.Windows.Automation.AutomationProperties.SetName(
                 DetailImage,
                 posting.ImageAltText ?? "物品图片");
@@ -99,6 +100,13 @@ public partial class BrowseView : UserControl
         {
             DetailImage.Source = null;
             DetailImage.Visibility = Visibility.Collapsed;
+            FallbackArtwork.Visibility = Visibility.Visible;
+            CategoryGlyph.Text = GetCategoryGlyph(posting);
+            CategoryArtworkLabel.Text =
+                $"{UiFormat.PostingTypeLabel(posting.Type)} · {posting.CategoryName}";
+            System.Windows.Automation.AutomationProperties.SetName(
+                FallbackArtwork,
+                $"{CategoryArtworkLabel.Text}类型插画");
         }
 
         if (_currentUser is null)
@@ -218,6 +226,26 @@ public partial class BrowseView : UserControl
         ClaimStatementBox.Clear();
         ClaimPanel.Visibility = Visibility.Collapsed;
         ClaimButton.Focus();
+    }
+
+    private static string GetCategoryGlyph(PostingSummary posting)
+    {
+        if (posting.Title.Contains("伞", StringComparison.Ordinal) ||
+            posting.Description.Contains("伞", StringComparison.Ordinal))
+        {
+            return "☂";
+        }
+
+        return posting.CategoryName switch
+        {
+            "电子产品" => "🎧",
+            "证件" => "▣",
+            "书籍" => "📚",
+            "衣物" => "🧥",
+            "水杯" => "🥤",
+            "钥匙" => "🔑",
+            _ => "📦"
+        };
     }
 
     private void FindMatchesButton_Click(object sender, RoutedEventArgs e)
