@@ -489,3 +489,9 @@ output/
 /wpf-*.png
 /douyin-reference*.png
 /docs/reference-ui/
+/douyin-karina-current.png
+/douyin-karina-second-confirm.png
+/douyin-karina-second.png
+
+# Local temporary workspaces
+/tmp/
